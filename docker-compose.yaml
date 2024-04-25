@@ -1,0 +1,170 @@
+---
+version: "3.1"
+services:
+  #*****************************************************************************************************************************************
+  #**** Indexer                                                                                                       
+  #*****************************************************************************************************************************************
+  # prowlarr
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:develop
+    container_name: prowlarr
+    environment:
+      - PUID=13006
+      - PGID=13000
+      - UMASK=002
+      - TZ=US/Eastern
+    volumes:
+      - /config/prowlarr-config:/config
+    ports:
+      - "9696:9696"
+    restart: unless-stopped
+
+  #*****************************************************************************************************************************************
+  #**** Media Management Services                                                                                                       
+  #*****************************************************************************************************************************************
+  # sonarr
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=13001
+      - PGID=13000
+      - UMASK=002
+      - TZ=US/Eastern
+    volumes:
+      - /config/sonarr-config:/config
+      - /data:/data
+    ports:
+      - "8989:8989"
+    restart: unless-stopped
+  # radarr
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=13002
+      - PGID=13000
+      - UMASK=002
+      - TZ=US/Eastern
+    volumes:
+      - /config/radarr-config:/config
+      - /data:/data
+    ports:
+      - "7878:7878"
+    restart: unless-stopped
+  # lidarr
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      - PUID=13003
+      - PGID=13000
+      - UMASK=002
+      - TZ=US/Eastern
+    volumes:
+      - /config/lidarr-config:/config
+      - /data:/data
+    ports:
+      - "8686:8686"
+    restart: unless-stopped
+  # readarr
+  readarr:
+    image: lscr.io/linuxserver/readarr:develop
+    container_name: readarr
+    environment:
+      - PUID=13004
+      - PGID=13000
+      - UMASK=002
+      - TZ=US/Eastern
+    volumes:
+      - /config/readarr-config:/config
+      - /data:/data
+    ports:
+      - "8787:8787"
+    restart: unless-stopped
+
+  #*****************************************************************************************************************************************
+  #**** Media Servers                                                                                                       
+  #*****************************************************************************************************************************************
+  # audiobookshelf
+  audiobookshelf:
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    container_name: audiobookshelf
+    environment:
+      - AUDIOBOOKSHELF_UID=13009
+      - AUDIOBOOKSHELF_GID=13000
+    volumes:
+      - /config/audiobookshelf:/config
+      - /data/audiobooks:/audiobooks
+      - /data/podcasts:/podcasts
+      - /data/metadata:/metadata
+    ports:
+      - "13378:80"
+    restart: unless-stopped
+  # overseerr
+  overseerr:
+    image: sctx/overseerr:latest
+    container_name: overseerr
+    environment:
+      - PUID=13009
+      - PGID=13000
+      - UMASK=002
+      - TZ=US/Eastern
+    volumes:
+      - /config/overseerr-config:/app/config
+    ports:
+      - "5055:5055"
+    restart: unless-stopped
+  # plex
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=13010
+      - PGID=13000
+      - VERSION=docker
+      - PLEX_CLAIM=
+    volumes:
+      - /config/plex-config:/config
+      - /data/media:/media
+    ports:
+      - "32400:32400"
+    restart: unless-stopped
+  # jellyfin
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=${UID}
+      - PGID=13000
+      - UMASK=002
+      - TZ=US/Eastern
+    volumes:
+      - /config/jellyfin-config:/config
+      - /data/media:/data
+    ports:
+      - "8096:8096"
+    restart: unless-stopped
+
+  #*****************************************************************************************************************************************
+  #**** Download Clients                                                                                                     
+  #*****************************************************************************************************************************************
+  # qbittorrent
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=13007
+      - PGID=13000
+      - UMASK=002
+      - TZ=US/Eastern
+      - WEBUI_PORT=8080
+    volumes:
+      - /config/qbittorrent-config:/config
+      - /data/torrents:/data/torrents
+    ports:
+      - "8080:8080"
+      - "6881:6881"
+      - "6881:6881/udp"
+    restart: unless-stopped
