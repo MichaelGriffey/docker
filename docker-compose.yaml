@@ -1,7 +1,21 @@
 ---
 version: "3.1"
-
+networks:
+  multimedia:
+    ipam:
+      ipv4_address: 10.27.27.2
 services:
+  #*****************************************************************************************************************************************
+  #**** Manager
+  #*****************************************************************************************************************************************
+  kali:
+    image: kalilinux/kali-rolling:latest
+    container_name: voldemort3
+    networks:
+      hacked:
+        ipv4_address: 10.27.27.3
+    tty: true
+
   #*****************************************************************************************************************************************
   #**** Indexers
   #*****************************************************************************************************************************************
@@ -27,8 +41,8 @@ services:
 
   # radarr
   radarr:
-    container_name: radarr
     image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -45,8 +59,8 @@ services:
 
   # sonarr
   sonarr:
-    container_name: sonarr
     image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
