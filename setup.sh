@@ -59,6 +59,3 @@ sudo chown -R radarr:mediacenter data/config/radarr-config
 sudo chown -R readarr:mediacenter data/config/readarr-config
 sudo chown -R sabnzbd:mediacenter data/config/sabnzbd-config
 sudo chown -R sonarr:mediacenter data/config/sonarr-config
-
-
-echo "UID=$(id -u)" >> .env
