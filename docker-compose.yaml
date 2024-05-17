@@ -7,7 +7,7 @@ services:
   #*****************************************************************************************************************************************
   kali:
     image: kalilinux/kali-rolling:latest
-    container_name: voldemort3
+    container_name: voldemort16
     tty: true
 
   #*****************************************************************************************************************************************
@@ -22,7 +22,7 @@ services:
       - PUID=${prowlerUID}
       - PGID=${PGID}
       - UMASK=${UMASK}
-      - TZ=${TIME_ZONE}
+      - TZ=${timezone}
     volumes:
       - ${configs}/prowlarr-config:/config
     ports:
@@ -41,7 +41,7 @@ services:
       - PUID=${radarUID}
       - PGID=${PGID}
       - UMASK=${UMASK}
-      - TZ=${TIME_ZONE}
+      - TZ=${timezone}
     volumes:
       - ${configs}/radarr-config:/config
       - ${data}:/data
@@ -59,7 +59,7 @@ services:
       - PUID=${sonarrUID}
       - PGID=${PGID}
       - UMASK=${UMASK}
-      - TZ=${TIME_ZONE}
+      - TZ=${timezone}
     volumes:
       - ${configs}/sonarr-config:/config
       - ${data}:/data
