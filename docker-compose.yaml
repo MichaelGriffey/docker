@@ -1,9 +1,6 @@
 ---
 version: "3.1"
-networks:
-  multimedia:
-    ipam:
-      ipv4_address: 10.27.27.2
+
 services:
   #*****************************************************************************************************************************************
   #**** Manager
@@ -11,9 +8,6 @@ services:
   kali:
     image: kalilinux/kali-rolling:latest
     container_name: voldemort3
-    networks:
-      hacked:
-        ipv4_address: 10.27.27.3
     tty: true
 
   #*****************************************************************************************************************************************
@@ -25,7 +19,7 @@ services:
     image: lscr.io/linuxserver/prowlarr:develop
     container_name: prowlarr
     environment:
-      - PUID=${PUID}
+      - PUID=${prowlerUID}
       - PGID=${PGID}
       - UMASK=${UMASK}
       - TZ=${TIME_ZONE}
@@ -44,7 +38,7 @@ services:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
     environment:
-      - PUID=${PUID}
+      - PUID=${radarUID}
       - PGID=${PGID}
       - UMASK=${UMASK}
       - TZ=${TIME_ZONE}
@@ -62,7 +56,7 @@ services:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr
     environment:
-      - PUID=${PUID}
+      - PUID=${sonarrUID}
       - PGID=${PGID}
       - UMASK=${UMASK}
       - TZ=${TIME_ZONE}
@@ -80,7 +74,7 @@ services:
     image: lscr.io/linuxserver/lidarr:latest
     container_name: lidarr
     environment:
-      - PUID=${PUID}
+      - PUID=${lidarrUID}
       - PGID=${PGID}
       - UMASK=${UMASK}
       - TZ=${timezone}
@@ -96,7 +90,7 @@ services:
     image: lscr.io/linuxserver/readarr:develop
     container_name: readarr
     environment:
-      - PUID=${PUID}
+      - PUID=${readarrUID}
       - PGID=${PGID}
       - UMASK=${UMASK}
       - TZ=${timezone}
@@ -116,7 +110,7 @@ services:
     image: ghcr.io/advplyr/audiobookshelf:latest
     container_name: audiobookshelf
     environment:
-      - AUDIOBOOKSHELF_UID=13009
+      - AUDIOBOOKSHELF_UID=${audiobookshelfUID}
       - AUDIOBOOKSHELF_GID=${PGID}
     volumes:
       - ${configs}/audiobookshelf:/config
@@ -131,7 +125,7 @@ services:
     image: sctx/overseerr:latest
     container_name: overseerr
     environment:
-      - PUID=${PUID}
+      - PUID=${overseerrUID}
       - PGID=${PGID}
       - UMASK=${UMASK}
       - TZ=${timezone}
@@ -147,7 +141,7 @@ services:
     container_name: plex
     network_mode: host
     environment:
-      - PUID=${PUID}
+      - PUID=${plexUID}
       - PGID=${PGID}
       - VERSION=docker
       - PLEX_CLAIM=
@@ -163,7 +157,7 @@ services:
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
     environment:
-      - PUID=${PUID}
+      - PUID=${jellyfinUID}
       - PGID=${PGID}
       - UMASK=${UMASK}
       - TZ=${timezone}
@@ -182,7 +176,7 @@ services:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
     environment:
-      - PUID=${PUID}
+      - PUID=${qbittorrentUID}
       - PGID=${PGID}
       - UMASK=${UMASK}
       - TZ=${timezone}
