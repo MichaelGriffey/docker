@@ -8,8 +8,6 @@ services:
   kali:
     image: kalilinux/kali-rolling:latest
     container_name: voldemort16
-    networks:
-            - starr
     tty: true
 
   #*****************************************************************************************************************************************
@@ -19,8 +17,6 @@ services:
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:develop
     container_name: prowlarr
-    networks:
-            - starr
     environment:
       - PUID=${prowlerUID}
       - PGID=${PGID}
@@ -40,8 +36,6 @@ services:
   radarr:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
-    networks:
-            - starr
     environment:
       - PUID=${radarUID}
       - PGID=${PGID}
@@ -60,8 +54,6 @@ services:
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr
-    networks:
-            - starr
     environment:
       - PUID=${sonarrUID}
       - PGID=${PGID}
@@ -80,8 +72,6 @@ services:
   lidarr:
     image: lscr.io/linuxserver/lidarr:latest
     container_name: lidarr
-    networks:
-            - starr
     environment:
       - PUID=${lidarrUID}
       - PGID=${PGID}
@@ -98,8 +88,6 @@ services:
   readarr:
     image: lscr.io/linuxserver/readarr:develop
     container_name: readarr
-    networks:
-            - starr
     environment:
       - PUID=${readarrUID}
       - PGID=${PGID}
@@ -120,8 +108,6 @@ services:
   audiobookshelf:
     image: ghcr.io/advplyr/audiobookshelf:latest
     container_name: audiobookshelf
-    networks:
-            - starr
     environment:
       - AUDIOBOOKSHELF_UID=${audiobookshelfUID}
       - AUDIOBOOKSHELF_GID=${PGID}
@@ -137,8 +123,6 @@ services:
   overseerr:
     image: sctx/overseerr:latest
     container_name: overseerr
-    networks:
-            - starr
     environment:
       - PUID=${overseerrUID}
       - PGID=${PGID}
@@ -154,8 +138,6 @@ services:
   plex:
     image: lscr.io/linuxserver/plex:latest
     container_name: plex
-    networks:
-            - starr
     environment:
       - PUID=${plexUID}
       - PGID=${PGID}
@@ -172,8 +154,6 @@ services:
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
-    networks:
-            - starr
     environment:
       - PUID=${jellyfinUID}
       - PGID=${PGID}
@@ -193,8 +173,6 @@ services:
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
-    networks:
-            - starr
     environment:
       - PUID=${qbittorrentUID}
       - PGID=${PGID}
@@ -209,11 +187,3 @@ services:
       - "6881:6881"
       - "6881:6881/udp"
     restart: unless-stopped
-
-#*****************************************************************************************************************************************
-#**** Networks                                                                                                  
-#*****************************************************************************************************************************************
-networks:
-  starr:
-    external: true
-    name: starr
