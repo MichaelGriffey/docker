@@ -141,7 +141,7 @@ services:
     network_mode: host
     restart: unless-stopped
   
-  # jellyseer
+  # jellyseerr
   jellyseerr:
     image: fallenbagel/jellyseerr:latest
     container_name: jellyseerr
