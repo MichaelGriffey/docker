@@ -196,3 +196,18 @@ services:
       - "6881:6881"
       - "6881:6881/udp"
     restart: unless-stopped
+
+  #sabnzbd
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    environment:
+      - PUID=${sabnzbdUID}
+      - PGID=${PGID}
+      - TZ=${timezone}
+    volumes:
+      - /${configs}/sabnzbd-config:/config
+      - ${usenet}:/downloads
+    ports:
+      - 8080:8080
+    restart: unless-stopped
