@@ -1,17 +1,9 @@
----
-version: "3.1"
+name: mediaserver
 
 services:
-  #*****************************************************************************************************************************************
-  #**** Manager
-  #*****************************************************************************************************************************************
-  kali:
-    image: kalilinux/kali-rolling:latest
-    container_name: voldemort16
-    tty: true
 
   #*****************************************************************************************************************************************
-  #**** Indexers
+  #**** Index Manager
   #*****************************************************************************************************************************************
   # prowlarr
   prowlarr:
@@ -32,7 +24,7 @@ services:
   #**** Media Management Services                                                                                                       
   #*****************************************************************************************************************************************
 
-  # radarr
+  # radarr Movies
   radarr:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
@@ -43,14 +35,14 @@ services:
       - TZ=${timezone}
     volumes:
       - ${configs}/radarr-config:/config
-      - ${data}:/data
+      - ${data}:${data}
     ports:
       - "7878:7878"
     logging:
       driver: json-file
     restart: unless-stopped
 
-  # sonarr
+  # sonarr TV
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr
@@ -61,14 +53,14 @@ services:
       - TZ=${timezone}
     volumes:
       - ${configs}/sonarr-config:/config
-      - ${data}:/data
+      - ${data}:${data}
     ports:
       - "8989:8989"
     logging:
       driver: json-file
     restart: unless-stopped
 
-  # lidarr
+  # lidarr Music
   lidarr:
     image: lscr.io/linuxserver/lidarr:latest
     container_name: lidarr
@@ -79,12 +71,12 @@ services:
       - TZ=${timezone}
     volumes:
       - ${configs}/lidarr-config:/config
-      - ${data}:/data
+      - ${data}:${data}
     ports:
       - "8686:8686"
     restart: unless-stopped
 
-  # readarr
+  # readarr Books
   readarr:
     image: lscr.io/linuxserver/readarr:develop
     container_name: readarr
@@ -95,7 +87,7 @@ services:
       - TZ=${timezone}
     volumes:
       - ${configs}/readarr-config:/config
-      - ${data}:/data
+      - ${data}:${data}
     ports:
       - "8787:8787"
     restart: unless-stopped
@@ -113,7 +105,7 @@ services:
       - AUDIOBOOKSHELF_GID=${PGID}
     volumes:
       - ${configs}/audiobookshelf:/config
-      - ${audiobooks}:/audiobooks
+      - ${audiobooks}:${audiobooks}
       - ${metadata}:/metadata
     ports:
       - "13378:80"
@@ -145,11 +137,25 @@ services:
       - PLEX_CLAIM=
     volumes:
       - ${configs}/plex-config:/config
-      - ${media}:/media
-    ports:
-      - "32400:32400"
+      - ${media}:${media}
+    network_mode: host
     restart: unless-stopped
   
+  # jellyseer
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - PUID=${jellyseerrUID}
+      - PGID=${PGID}
+      - UMASK=${UMASK}
+      - TZ=${timezone}
+    volumes:
+      - ${configs}/jellyseerr-config:/app/config
+    ports:
+      - "5056:5055"
+    restart: unless-stopped
+
   # jellyfin
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
@@ -161,7 +167,7 @@ services:
       - TZ=${timezone}
     volumes:
       - ${configs}/jellyfin-config:/config
-      - ${media}:/data
+      - ${media}:${media}
     ports:
       - "8096:8096"
     restart: unless-stopped
@@ -181,7 +187,7 @@ services:
       - WEBUI_PORT=8080
     volumes:
       - ${configs}/qbittorrent-config:/config
-      - ${torrents}:/torrents
+      - ${torrents}:${torrents}:rw
     ports:
       - "8080:8080"
       - "6881:6881"
@@ -198,7 +204,7 @@ services:
       - TZ=${timezone}
     volumes:
       - /${configs}/sabnzbd-config:/config
-      - ${usenet}:/downloads
+      - ${usenet}:${usenet}:rw
     ports:
       - 8081:8080
     restart: unless-stopped

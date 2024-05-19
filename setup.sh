@@ -38,7 +38,7 @@ sudo usermod -a -G mediacenter audiobookshelf
 # Make directories
 sudo mkdir -pv data/config/{audiobookshelf,bazarr,jackett,jellyfin,jellyseerr,lidarr,mylar,overseerr,plex,prowlarr,qbittorrent,radarr,readarr,sabnzbd,sonarr,tautulli}-config
 sudo mkdir -pv data/config/audiobookshelf-metadata
-sudo mkdir -pv data/{media,torrents,usenet}/{audiobooks,books,comics,movies,music,podcasts,tv}
+sudo mkdir -pv data/{media,torrents,usenet/complete,usenet/incomplete}/{audiobooks,books,comics,movies,music,podcasts,tv}
 
 # Set permissions
 sudo chmod -R 775 data/
